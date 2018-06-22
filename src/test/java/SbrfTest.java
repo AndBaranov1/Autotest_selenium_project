@@ -57,12 +57,14 @@ public class SbrfTest {
         //Нажимаем вкладку "Страхование"
         driver.findElement(By.xpath("//li//span[contains(text(),'Страхование')]")).click();
         //Открываем путешествия и покупи
-        driver.findElement(By.xpath("//li//a[contains(text(), 'Путешествия и покупки')]")).click();
+        Wait<WebDriver> wait = new WebDriverWait(driver, 10, 1000);
+        wait.until(ExpectedConditions.visibilityOf(  driver.findElement(By.xpath("//li//a[contains(text(), 'Путешествия и покупки')]")))).click();
+
         WebElement title = driver.findElement(By.xpath("//div//h3[contains(text(), 'Страхование путешественников')]"));
         //Проверяем название заголовка "Страхование путешественников"
         Assert.assertEquals("Страхование путешественников", title.getText());
         //Нажимаем "Оформить онлайн"
-        driver.findElement(By.xpath("//*[@id=\"main\"]/div/div/table/tbody/tr/td/div/div/div/div/div/div[2]/div/div[2]/div/div[2]/div/div[2]/div/div/div/div/div/p/a")).click();
+        driver.findElement(By.xpath("//a[@href='https://online.sberbankins.ru/store/vzr/index.html#/viewCalc']")).click();
 
         //Переход на вкладку
         String Tab1 = driver.getWindowHandle();
@@ -71,9 +73,9 @@ public class SbrfTest {
             driver.switchTo().window(availableWindows.get(1));
         }
         //Добавляем ожидание
-        Wait<WebDriver> wait = new WebDriverWait(driver, 10, 1000);
+        //Wait<WebDriver> wait = new WebDriverWait(driver, 10, 1000);
         wait.until(ExpectedConditions.visibilityOf(
-                driver.findElement(By.xpath("//*[@id=\"views\"]/form/section/section/section[2]/div[1]/div[1]/div"))));
+                driver.findElement(By.xpath("//*[contains(text(),'Минимальная')]"))));
         //Выбираем "Минимальная"
         driver.findElement(By.xpath("//*[@id=\"views\"]/form/section/section/section[2]/div[1]/div[1]/div")).click();
         //Нажимаем "Оформить"
@@ -98,7 +100,7 @@ public class SbrfTest {
         //Нажимаем продолжить
         driver.findElement(By.xpath("//*[@id=\"views\"]/section/form/section/section[5]/div[1]/span[2]")).click();
         // Проверяем, что появилось сообщение о том, что заполнены не все поля
-        Assert.assertEquals("Заполнены не все обязательные поля", driver.findElement(By.xpath("//*[@id=\"views\"]/section/form/section/section[5]/div[2]/div[1]")).getText());
+        Assert.assertEquals("Заполнены не все обязательные поля", driver.findElement(By.xpath("//div[@ng-show='tryNext && myForm.$invalid']")).getText());
 
         //Проверяем, что все поля заполнены верно
         Assert.assertEquals("Ivanov", driver.findElement(By.name("insured0_surname")).getAttribute("value"));
